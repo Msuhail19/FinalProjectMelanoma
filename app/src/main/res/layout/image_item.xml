@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_border"
+    android:layout_width="150dp"
+    android:layout_height="180dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginBottom="5dp"
+    android:gravity="center"
+    android:background="@drawable/customborder"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/item_image_count"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingLeft="60dp"
+            android:text="1/4" />
+
+        <ImageView
+            android:id="@+id/item_delete"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="end|center_vertical"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_close">
+
+        </ImageView>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/item_img_skin"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:padding="0dp"
+        android:scaleType="fitXY"
+        android:src="@mipmap/ic_launcher" />
+
+</LinearLayout>

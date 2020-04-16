@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Melanoma Detect!</string>
+    <string name="tab_text_1">Information</string>
+    <string name="tab_text_2">History</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="history_fragment">History Fragment</string>
+    <string name="info_fragment">Info Fragment</string>
+    <string name="instructional_text">
+        This application attempts to use deep learning to detect Malignant skin cancer via images taken by your smartphone.
+        Malignant Melanoma skin cancer develops on moles on the skin, which may have originally been benign.
+        \n\n
+        You may supply a single image or run multiple images of the same mole to get a more accurate average result.
+        Press the play button to run the model.
+        \n\n
+        The History tab contains all the previous runs of the models in question, with their results and the date they were run on.
+        \n\n
+        When providing images please ensure they contain as much detail of the mole as possible in order to get an accurate result.
+        \n\n
+        This model achieved 75% accuracy when tested on the isic dataset, but accuracy cannot be guaranteed.
+        This model is for research purposes only.
+    </string>
+</resources>
