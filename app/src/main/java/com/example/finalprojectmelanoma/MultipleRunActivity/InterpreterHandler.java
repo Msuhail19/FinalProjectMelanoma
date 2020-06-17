@@ -105,6 +105,4 @@ public class InterpreterHandler {
         return rgbVals;
     }
 
-
-
 }

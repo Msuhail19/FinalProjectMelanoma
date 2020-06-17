@@ -31,12 +31,15 @@ public class MainActivity extends AppCompatActivity implements
         InfoFragment.OnFragmentInteractionListener{
 
     private static List<RunDetails> runDetailsList = new ArrayList<>();
+    public static float threshold = 50;
+
     SectionsPagerAdapter sectionsPagerAdapter;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.base);
+        showDisclaimer();
 
         sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
@@ -46,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements
         tabs.setTabGravity(TabLayout.GRAVITY_CENTER);
         tabs.setupWithViewPager(viewPager);
 
-        final String[] option = {"  Single Image" , "  Multiple Images And Get Average"};
+        final String[] option = {"  Single Image" , "  Multiple Images"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.select_dialog_item,option);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select mode to run model : ");
@@ -98,6 +101,21 @@ public class MainActivity extends AppCompatActivity implements
         startActivity(intent);
         HistoryFragment hs = sectionsPagerAdapter.getHistoryFragment();
         hs.setmRecycler();
+    }
+
+    public void showDisclaimer(){
+        AlertDialog.Builder prompt = new AlertDialog.Builder(this);
+        prompt.setCancelable(false);
+        prompt.setTitle("Disclaimer");
+        prompt.setIcon(android.R.drawable.ic_dialog_alert);
+        prompt.setMessage ("This application is to be used for research purposes only and is not to be taken as a substitute for legitimate medical advice.");
+        prompt.setPositiveButton("I UNDERSTAND.", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+            }
+        });
+        prompt.show();
     }
 
 

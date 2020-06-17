@@ -3,6 +3,7 @@ package com.example.finalprojectmelanoma;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,8 +41,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v;
-        v = LayoutInflater.from(mContext).inflate(R.layout.item_history, parent,false);
+        View v =  LayoutInflater.from(mContext).inflate(R.layout.item_history, parent,false);
         MyViewHolder viewHolder = new MyViewHolder(v, mListener);
 
         return viewHolder;
@@ -71,8 +71,19 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
             /* Set image file !  */
             Bitmap image = BitmapFactory.decodeFile(path);
             holder.img.setImageBitmap(image);
+
+            /* Set verdict */
+            if(prob[0] >= MainActivity.threshold){
+                holder.tv_risk.setText(" Likely Malignant");
+            }
+            else{
+                holder.tv_risk.setTextColor(Color.GRAY);
+                holder.tv_risk.setText(" Likely Benign");
+            }
+
+
         }
-        else{
+        else {
             /* Code for adding multiple images resultview */
             holder.tv_title.setText("Run " + count + " (Average Results) ");
             List<String> paths = mData.get(position).getImagePaths();
@@ -82,30 +93,38 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
             Bitmap image = BitmapFactory.decodeFile(paths.get(0));
             holder.img.setImageBitmap(image);
             holder.number_of_images.setVisibility(View.VISIBLE);
-            holder.number_of_images.setText(""+paths.size());
+            holder.number_of_images.setText("" + paths.size());
 
-            DecimalFormat df = new DecimalFormat("#.##");
+            DecimalFormat df = new DecimalFormat("#.#");
 
-            float sum_benign = (float)0.0;
-            float sum_malignant =(float)0.0;
-            for(float[][] prob : probabilties){
+            float sum_benign = (float) 0.0;
+            float sum_malignant = (float) 0.0;
+            for (float[][] prob : probabilties) {
                 sum_malignant += prob[0][0];
                 sum_benign += prob[0][1];
             }
 
-            holder.tv_mel.setText("Benign: " +  df.format((float)sum_benign/probabilties.size()) + "% ");
-            holder.tv_ben.setText("Malignant: " +  df.format((float)sum_malignant/probabilties.size()) + "% ");
+            float mel_avg = (float) sum_malignant / probabilties.size();
+            float ben_avg = (float) sum_benign / probabilties.size();
+
+            holder.tv_mel.setText("Benign: " + df.format(ben_avg * 100) + "% ");
+            holder.tv_ben.setText("Malignant: " + df.format((float) mel_avg * 100) + "% ");
             String strDate = mData.get(position).getDate();
             holder.tv_date.setText(strDate);
 
-            
+            if( mel_avg*100 >= MainActivity.threshold){
+                holder.tv_risk.setTextColor(Color.RED);
+                holder.tv_risk.setText(" Likely Malignant");
+            }
+            else{
+                holder.tv_risk.setTextColor(Color.GRAY);
+                holder.tv_risk.setText(" Likely Benign");
+            }
+
+
         }
 
-
-
-        /* Add onclick listener to remove item.*/
-
-
+        /* Add verdict .*/
     }
 
     @Override
@@ -137,13 +156,14 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
             tv_mel = (TextView) itemView.findViewById(R.id.item_mal_prob);
             tv_ben = (TextView) itemView.findViewById(R.id.item_benign_prob);
             number_of_images = itemView.findViewById(R.id.number_of_images);
+            textBlock = itemView.findViewById(R.id.history_layout_main_text);
 
             /* Define Imageview */
             img = (ImageView) itemView.findViewById(R.id.item_img_skin);
             delete = (ImageView) itemView.findViewById(R.id.item_delete);
 
             /* Define Layout */
-            number_of_images.setOnClickListener(new View.OnClickListener() {
+            textBlock.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (listener != null) {

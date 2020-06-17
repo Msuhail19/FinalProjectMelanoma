@@ -3,6 +3,7 @@ package com.example.finalprojectmelanoma.MultipleRunActivity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.finalprojectmelanoma.MainActivity;
 import com.example.finalprojectmelanoma.R;
 
 import java.text.DecimalFormat;
@@ -25,7 +27,7 @@ public class ResultsItemAdapter extends RecyclerView.Adapter<ResultsItemAdapter.
     private OnItemClickListener mListener;
 
     // data is passed into the constructor
-    ResultsItemAdapter(Context context, List<ResultItem> data) {
+    public ResultsItemAdapter(Context context, List<ResultItem> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
@@ -36,7 +38,7 @@ public class ResultsItemAdapter extends RecyclerView.Adapter<ResultsItemAdapter.
     // inflates the row layout from xml when needed
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.results_item, parent, false);
+        View view = mInflater.inflate(R.layout.results_item2, parent, false);
         MyViewHolder viewHolder = new MyViewHolder(view, mListener);
 
         return viewHolder;
@@ -52,10 +54,12 @@ public class ResultsItemAdapter extends RecyclerView.Adapter<ResultsItemAdapter.
 
 
         /* Set recyclerview item equal to result item values */
-        DecimalFormat value = new DecimalFormat("#.##");
+        DecimalFormat value = new DecimalFormat("#.#");
         holder.img.setImageBitmap(image);
-        holder.mal_txt.setText(value.format(probability[0][0]));
-        holder.ben_txt.setText(value.format(probability[0][1]));
+        holder.mal_txt.setText(value.format(probability[0][0]*100) + "%");
+        holder.ben_txt.setText(value.format(probability[0][1]*100) + "%");
+
+
     }
 
     // total number of rows
@@ -77,6 +81,7 @@ public class ResultsItemAdapter extends RecyclerView.Adapter<ResultsItemAdapter.
             img = itemView.findViewById(R.id.result_item_image);
             mal_txt = itemView.findViewById(R.id.mal_item_text);
             ben_txt = itemView.findViewById(R.id.ben_item_text);
+
         }
     }
 }

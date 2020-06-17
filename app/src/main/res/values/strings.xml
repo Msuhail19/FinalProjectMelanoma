@@ -16,8 +16,10 @@
         The History tab contains all the previous runs of the models in question, with their results and the date they were run on.
         \n\n
         When providing images please ensure they contain as much detail of the mole as possible in order to get an accurate result.
+        This means centering the image on the mole in question and zooming in as much as possible so it takes up a significant portion of the image.
+        Please also crop the image around the mole into a square format for the best results.
         \n\n
-        This model achieved 75% accuracy when tested on the isic dataset, but accuracy cannot be guaranteed.
+        This model achieved approximately 80% accuracy when tested on the isic dataset, but accuracy cannot be guaranteed.
         This model is for research purposes only.
     </string>
 </resources>

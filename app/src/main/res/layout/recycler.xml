@@ -14,6 +14,8 @@
             android:id="@+id/frame"
             android:layout_width="350dp"
             android:layout_height="480dp"
+            android:layout_marginTop="16dp"
+            android:foregroundGravity="center_vertical"
             android:orientation="vertical"
             android:padding="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -94,10 +96,26 @@
                         android:textStyle="bold" />
 
                 </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/multiple_instructions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="10dp"
+                    android:text="Supply multiple images of the same mole and get an average result for more accurate readings"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/getImageRelative"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </FrameLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

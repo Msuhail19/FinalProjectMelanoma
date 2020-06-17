@@ -1,11 +1,13 @@
 package com.example.finalprojectmelanoma.Fragments;
 
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -131,7 +133,7 @@ public class HistoryFragment extends Fragment {
 
             @Override
             public void onClickShowResults(int position) {
-                Toast.makeText(getContext(), "Showing results", Toast.LENGTH_SHORT);
+                Toast.makeText(getContext(), "Showing results", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), DisplayResultsActivity.class);
                 intent.putExtra("multiple", lstDetails.get(position).isMultipleImages());
                 if(lstDetails.get(position).isMultipleImages()){
@@ -139,9 +141,13 @@ public class HistoryFragment extends Fragment {
                     intent.putExtra("probability", lstDetails.get(position).getProbabilities());
                 }
                 else{
-                    intent.putExtra("image", lstDetails.get(position).getProbability());
+                    intent.putExtra("image", lstDetails.get(position).getImagePath());
                     intent.putExtra("probability",lstDetails.get(position).getProbability());
                 }
+
+                startActivity(intent);
+                setmRecycler();
+
             }
         });
         mRecycler.setAdapter(recAdapter);

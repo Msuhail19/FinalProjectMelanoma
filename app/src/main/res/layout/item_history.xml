@@ -92,11 +92,10 @@
 
             <TextView
                 android:id="@+id/item_verdict"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text=" Risk Value"
-                android:textColor="#FF0000"
-                android:textStyle="bold" />
+                android:textColor="#FF0000" />
         </LinearLayout>
 
 

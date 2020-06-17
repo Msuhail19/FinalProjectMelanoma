@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -17,21 +18,26 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.loader.content.CursorLoader;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalprojectmelanoma.Fragments.HistoryFragment;
+import com.example.finalprojectmelanoma.MainActivity;
 import com.example.finalprojectmelanoma.R;
 
 import org.tensorflow.lite.Interpreter;
+import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -74,6 +80,7 @@ public class NewRunActivity extends AppCompatActivity {
 
         mData = new ArrayList<>();
         resetRecyclerView();
+        final TextView instructions = findViewById(R.id.multiple_instructions);
 
         /* find items and add onclicklistener */
         getImageRelative = findViewById(R.id.getImageRelative);
@@ -81,6 +88,7 @@ public class NewRunActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 addImage();
+                instructions.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -151,7 +159,7 @@ public class NewRunActivity extends AppCompatActivity {
         ArrayList<String> imagePaths = new ArrayList<>();
         ArrayList<float[][]> probabilities = new ArrayList<>();
 
-        DecimalFormat value = new DecimalFormat("#.##");
+        DecimalFormat value = new DecimalFormat("#.#");
 
         for(ImageItem x : mData){
             // work out average probability across the images provided
@@ -163,12 +171,42 @@ public class NewRunActivity extends AppCompatActivity {
         }
 
         RecyclerView resultImages = findViewById(R.id.RecyclerResults);
-        resultImages.setLayoutManager(new GridLayoutManager(this, 2, RecyclerView.VERTICAL ,false));
+        resultImages.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         ResultsItemAdapter resultAdapter = new ResultsItemAdapter(  this, resultData);
         resultImages.setAdapter(resultAdapter);
 
-        ben_prob.setText(value.format((float)ben_average/mData.size()) + "%");
-        mal_prob.setText(value.format((float)mal_average/mData.size()) + "%");
+        TextView hide = findViewById(R.id.hideAverage);
+        final LinearLayout showAverage = findViewById(R.id.showAverage);
+        final ConstraintLayout averageCard = findViewById(R.id.averageConstraintLayout);
+
+        hide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                averageCard.setVisibility(View.INVISIBLE);
+                showAverage.setVisibility(View.VISIBLE);
+            }
+        });
+
+        showAverage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                averageCard.setVisibility(View.VISIBLE);
+                showAverage.setVisibility(View.INVISIBLE);
+            }
+        });
+
+
+        ben_prob.setText(value.format((float)ben_average*100/mData.size()) + "%");
+        mal_prob.setText(value.format((float)mal_average*100/mData.size()) + "%");
+
+        if(((float)mal_average/mData.size()*100) >= MainActivity.threshold){
+            verdict.setTextColor(Color.RED);
+            verdict.setText("Likely Melanoma");
+        }
+        else {
+            verdict.setTextColor(Color.GRAY);
+            verdict.setText("Likely Benign");
+        }
 
         Date currentTime = Calendar.getInstance().getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm   dd/MM/yy ");
@@ -214,8 +252,6 @@ public class NewRunActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm   dd/MM/yy ");
         String currentDate = sdf.format(currentTime);
 
-        /* Add item to history list. */
-        HistoryFragment.addItem(paths, probabilties, currentDate);
 
         Log.v("Predictions : ","Exiting method");
     }
